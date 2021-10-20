@@ -3,6 +3,7 @@ package com.suki.palomovies.app.discover
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -30,11 +31,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.CircularReveal
@@ -48,7 +49,7 @@ import com.suki.palomovies.ui.theme.TextWhite
 @ExperimentalComposeUiApi
 @ExperimentalFoundationApi
 @Composable
-fun MovieSearchScreen() {
+fun MovieSearchScreen(navController: NavController) {
     val viewModel = hiltViewModel<MovieSearchViewModel>()
     val movieList = viewModel.moviesList.value
     Box(
@@ -75,7 +76,9 @@ fun MovieSearchScreen() {
                         .padding(dimensionResource(id = R.dimen.spacing_base_2x)),
                 ) {
                     items(movieList.size) {
-                        MovieThumbnail(feature = movieList[it])
+                        MovieThumbnail(feature = movieList[it], onClick = {
+                            navController.navigate("movie_details")
+                        })
                     }
                 }
             }
@@ -210,7 +213,8 @@ fun SearchBar(viewModel: MovieSearchViewModel) {
 
 @Composable
 fun MovieThumbnail(
-    feature: Movie
+    feature: Movie,
+    onClick: () -> Unit
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -218,6 +222,7 @@ fun MovieThumbnail(
             .background(Purple500)
             .clip(RoundedCornerShape(10.dp))
             .padding(dimensionResource(id = R.dimen.spacing_base_half))
+            .clickable(onClick = onClick),
     ) {
         Column(
             modifier = Modifier
