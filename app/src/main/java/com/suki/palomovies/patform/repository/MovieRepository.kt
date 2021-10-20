@@ -12,9 +12,14 @@ interface MovieRepository {
 class MovieRepositoryImpl @Inject constructor(
     private val movieApi: MovieApi
 ) : MovieRepository {
-    override suspend fun searchMovie(query: String, type: String, page: Int): List<Movie> =
-        movieApi.searchMovie(query = query, type = type, page = page).Search.map {
-            it.mapToDomain()
+    override suspend fun searchMovie(query: String, type: String, page: Int): List<Movie> {
+        val result = movieApi.searchMovie(query = query, type = type, page = page)
+        if (result.Search?.isNotEmpty() == true) {
+            return result.Search.map {
+                it.mapToDomain()
+            }
         }
+        return arrayListOf()
+    }
 }
 

@@ -15,21 +15,31 @@ class MovieSearchViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {
 
-    val moviesList: MutableState<List<Movie>> = mutableStateOf(ArrayList())
+    var moviesList: MutableState<List<Movie>> = mutableStateOf(ArrayList())
+    val query = mutableStateOf("")
 
     init {
-        searchMovie(query = "marvel")
+//        searchMovie(query = "disney")
+//        query.value = "disn"
     }
 
     fun searchMovie(query: String){
-        viewModelScope.launch {
-            val result = movieRepository.searchMovie(
-                query = query,
-                type = "movie",
-                page = 1,
+        if (query.isNotEmpty()) {
+            viewModelScope.launch {
+                val result = movieRepository.searchMovie(
+                    query = query,
+                    type = "movie",
+                    page = 1,
 
-            )
-            moviesList.value = result
+                    )
+                moviesList.value = result
+            }
+        } else {
+            moviesList.value = ArrayList()
         }
+    }
+
+    fun onQueryChanged(query: String){
+        this.query.value = query
     }
 }
