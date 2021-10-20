@@ -10,15 +10,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -29,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,18 +51,22 @@ import com.suki.palomovies.ui.theme.TextWhite
 fun MovieSearchScreen() {
     val viewModel = hiltViewModel<MovieSearchViewModel>()
     val movieList = viewModel.moviesList.value
-    Box(modifier = Modifier
-        .background(Purple700)){
-        Column(modifier = Modifier
-            .fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .background(Purple700)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             var headerText = stringResource(id = R.string.search_results)
             if (viewModel.moviesList.value.isEmpty()) {
                 headerText = stringResource(id = R.string.start_by)
-                HeaderView(headerText)
+                HeaderView(viewModel = viewModel, title = headerText)
                 SearchBar(viewModel = viewModel)
-                NoResultView()
+                NoResultView(viewModel = viewModel)
             } else {
-                HeaderView(headerText)
+                HeaderView(viewModel = viewModel, title = headerText)
                 SearchBar(viewModel = viewModel)
                 LazyVerticalGrid(
                     cells = GridCells.Fixed(2),
@@ -78,28 +84,42 @@ fun MovieSearchScreen() {
 }
 
 @Composable
-fun HeaderView(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.h2,
-        color = TextWhite,
+fun HeaderView(viewModel: MovieSearchViewModel, title: String) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .padding(vertical = dimensionResource(id = R.dimen.spacing_base_2x))
-            .padding(horizontal = dimensionResource(id = R.dimen.spacing_base_2x))
-    )
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.h2,
+            color = TextWhite,
+            modifier = Modifier
+                .padding(all = dimensionResource(id = R.dimen.spacing_base_2x))
+        )
+        if (viewModel.resultsFetching.value) {
+            CircularProgressIndicator(
+                color = TextWhite,
+                modifier = Modifier
+                    .padding(all = dimensionResource(id = R.dimen.spacing_base_2x))
+                    .height(dimensionResource(id = R.dimen.spacing_base_3x))
+                    .width(dimensionResource(id = R.dimen.spacing_base_3x))
+            )
+        }
+    }
 }
 
 @Composable
-fun NoResultView() {
+fun NoResultView(viewModel: MovieSearchViewModel) {
     Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .padding(30.dp)
             .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
-            .clip(shape = RoundedCornerShape(16.dp)),
     ) {
         Card(
-            modifier = Modifier.size(200.dp).wrapContentSize(Alignment.Center),
+            modifier = Modifier
+                .size(200.dp),
             shape = CircleShape,
             elevation = 2.dp
         ) {
@@ -107,7 +127,14 @@ fun NoResultView() {
                 painterResource(R.drawable.movie_placeholder),
                 contentDescription = "EmptyResultsImage",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+            )
+        }
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_base_2x)))
+        if (viewModel.noResultFound.value) {
+            Text(
+                stringResource(id = R.string.no_results_found),
+                style = MaterialTheme.typography.h2,
+                color = TextWhite,
             )
         }
     }
@@ -118,12 +145,43 @@ fun NoResultView() {
 fun SearchBar(viewModel: MovieSearchViewModel) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val query = viewModel.query.value
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = dimensionResource(id = R.dimen.spacing_base_2x))
-        .padding(bottom = 0.dp)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = dimensionResource(id = R.dimen.spacing_base_2x))
+            .padding(bottom = 0.dp)
+    ) {
 
         TextField(
+            leadingIcon = {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(dimensionResource(id = R.dimen.spacing_base_2x))
+                        .size(
+                            dimensionResource(id = R.dimen.spacing_base_3x)
+                        ),
+                )
+            },
+            trailingIcon = {
+                if (query != "") {
+                    IconButton(
+                        onClick = {
+                            viewModel.query.value = ""
+                            viewModel.resetMovieList()
+                        }
+                    ) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .padding(15.dp)
+                                .size(24.dp)
+                        )
+                    }
+                }
+            },
             value = query,
             onValueChange = { viewModel.onQueryChanged(it) },
             modifier = Modifier
@@ -140,10 +198,14 @@ fun SearchBar(viewModel: MovieSearchViewModel) {
                 onDone = {
                     viewModel.searchMovie(query = query)
                     keyboardController?.hide()
-                })
+                }),
+            colors = TextFieldDefaults.textFieldColors(
+                cursorColor = Color.White,
+                leadingIconColor = Color.White,
+                trailingIconColor = Color.White,
+            )
         )
     }
-
 }
 
 @Composable
@@ -152,9 +214,9 @@ fun MovieThumbnail(
 ) {
     BoxWithConstraints(
         modifier = Modifier
-            .clip(RoundedCornerShape(5.dp))
             .padding(dimensionResource(id = R.dimen.spacing_base_half))
             .background(Purple500)
+            .clip(RoundedCornerShape(10.dp))
             .padding(dimensionResource(id = R.dimen.spacing_base_half))
     ) {
         Column(
