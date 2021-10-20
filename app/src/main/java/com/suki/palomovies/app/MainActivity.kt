@@ -8,7 +8,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import com.suki.palomovies.app.discover.MovieSearchScreen
 import com.suki.palomovies.ui.theme.PaloMoviesTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Palo Movies</string>
+    <string name="search_results">Search Results</string>
 </resources>
