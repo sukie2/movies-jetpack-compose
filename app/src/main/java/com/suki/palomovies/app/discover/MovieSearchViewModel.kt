@@ -21,7 +21,6 @@ class MovieSearchViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
     private val connectivityManager: ConnectivityManager,
 ) : ViewModel() {
-
     var moviesList: MutableState<List<Movie>> = mutableStateOf(ArrayList())
     val query = mutableStateOf("")
     var noResultFound = mutableStateOf(false)
@@ -30,10 +29,6 @@ class MovieSearchViewModel @Inject constructor(
 
     // Pagination starts at '1' (-1 = exhausted)
     val page = mutableStateOf(1)
-
-    init {
-//        searchMovie(query = "disney")
-    }
 
     fun searchMovie(query: String) {
         if (connectivityManager.isNetworkAvailable.value) {

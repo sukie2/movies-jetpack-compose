@@ -65,6 +65,7 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
+    implementation 'androidx.test:monitor:1.4.0'
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
     implementation('androidx.hilt:hilt-navigation-compose:1.0.0-alpha03')
 
@@ -84,6 +85,13 @@ dependencies {
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:$navigation_version")
+
+    // Test rules and transitive dependencies:
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+    // Needed for createComposeRule, but not createAndroidComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
+    // Mockito
+    testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
