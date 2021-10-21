@@ -4,4 +4,8 @@
     <string name="search">Search</string>
     <string name="start_by">Start by typing a movie name</string>
     <string name="no_results_found">No results found</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="director">Director</string>
+    <string name="writer">Writer</string>
+    <string name="actors">Actors</string>
 </resources>

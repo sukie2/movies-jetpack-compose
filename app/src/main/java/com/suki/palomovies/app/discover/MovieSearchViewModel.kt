@@ -30,7 +30,7 @@ class MovieSearchViewModel @Inject constructor(
     val page = mutableStateOf(1)
 
     init {
-//        searchMovie(query = "disney")
+        searchMovie(query = "disney")
     }
 
     fun searchMovie(query: String) {

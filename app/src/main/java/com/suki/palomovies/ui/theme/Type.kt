@@ -25,6 +25,12 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
+    body2 = TextStyle(
+        color = TextWhite,
+        fontFamily = gothicA1,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
     h1 = TextStyle(
         color = TextWhite,
         fontFamily = gothicA1,
