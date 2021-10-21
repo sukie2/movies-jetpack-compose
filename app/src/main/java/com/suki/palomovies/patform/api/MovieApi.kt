@@ -1,5 +1,6 @@
 package com.suki.palomovies.patform.api
 
+import com.suki.palomovies.patform.api.response.MovieDetailsResponse
 import com.suki.palomovies.patform.api.response.MovieListResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -17,4 +18,11 @@ interface MovieApi {
         @Query("type") type: String,
         @Query("page") page: Int,
     ): MovieListResponse
+
+    @GET(".")
+    suspend fun getMovieDetails(
+        @Query("apikey") token: String = API_KEY,
+        @Query("i") movieId: String,
+        @Query("plot") plot: String
+    ): MovieDetailsResponse
 }

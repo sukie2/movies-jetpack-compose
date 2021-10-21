@@ -45,9 +45,10 @@ class MovieSearchViewModel @Inject constructor(
                 )
                 if (result.isEmpty()) {
                     noResultFound.value = true
+                } else {
+                    moviesList.value = result
                 }
                 isFetching.value = false
-                moviesList.value = result
             }
         } else {
             resetMovieList()

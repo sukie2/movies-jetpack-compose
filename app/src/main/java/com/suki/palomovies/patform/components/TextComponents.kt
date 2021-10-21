@@ -3,6 +3,8 @@ package com.suki.palomovies.patform.components
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
@@ -18,8 +20,10 @@ fun HeaderText(text: String) {
 }
 
 @Composable
-fun SubHeaderText(text: String) {
+fun SubHeaderText(text: String, modifier: Modifier = Modifier,  textAlign: TextAlign? = null) {
     Text(
+        textAlign = textAlign,
+        modifier = modifier,
         text = text,
         style = MaterialTheme.typography.body1,
         maxLines = 1,

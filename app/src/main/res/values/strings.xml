@@ -8,4 +8,7 @@
     <string name="director">Director</string>
     <string name="writer">Writer</string>
     <string name="actors">Actors</string>
+    <string name="score">Score</string>
+    <string name="reviews">Reviews</string>
+    <string name="rate">Rated</string>
 </resources>
