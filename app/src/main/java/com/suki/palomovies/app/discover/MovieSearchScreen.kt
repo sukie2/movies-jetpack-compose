@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -52,6 +53,7 @@ import com.suki.palomovies.ui.theme.TextWhite
 fun MovieSearchScreen(navController: NavController) {
     val viewModel = hiltViewModel<MovieSearchViewModel>()
     val movieList = viewModel.moviesList.value
+    val page = viewModel.page.value
     Box(
         modifier = Modifier
             .background(Purple700)
@@ -75,8 +77,14 @@ fun MovieSearchScreen(navController: NavController) {
                         .fillMaxHeight()
                         .padding(dimensionResource(id = R.dimen.spacing_base_2x)),
                 ) {
-                    items(movieList.size) {
-                        MovieThumbnail(feature = movieList[it], onClick = {
+                    itemsIndexed(
+                        items = movieList
+                    ) { index, movie ->
+                        viewModel.onChangeScrollPosition(index)
+                        if((index + 1) >= (page * PAGE_SIZE) && !viewModel.isFetching.value){
+                            viewModel.nextPage(viewModel.query.value)
+                        }
+                        MovieThumbnail(feature = movie, onClick = {
                             navController.navigate("movie_details")
                         })
                     }
@@ -100,7 +108,7 @@ fun HeaderView(viewModel: MovieSearchViewModel, title: String) {
             modifier = Modifier
                 .padding(all = dimensionResource(id = R.dimen.spacing_base_2x))
         )
-        if (viewModel.resultsFetching.value) {
+        if (viewModel.isFetching.value) {
             CircularProgressIndicator(
                 color = TextWhite,
                 modifier = Modifier
