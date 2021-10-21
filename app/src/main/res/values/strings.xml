@@ -11,4 +11,5 @@
     <string name="score">Score</string>
     <string name="reviews">Reviews</string>
     <string name="rate">Rated</string>
+    <string name="no_network">No network connection</string>
 </resources>

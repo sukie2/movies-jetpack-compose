@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.suki.palomovies.patform.repository.MovieRepository
 import com.suki.palomovies.patform.repository.data.Movie
+import com.suki.palomovies.patform.util.ConnectivityManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ const val PAGE_SIZE = 10
 @HiltViewModel
 class MovieSearchViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
+    private val connectivityManager: ConnectivityManager,
 ) : ViewModel() {
 
     var moviesList: MutableState<List<Movie>> = mutableStateOf(ArrayList())
@@ -30,52 +32,56 @@ class MovieSearchViewModel @Inject constructor(
     val page = mutableStateOf(1)
 
     init {
-        searchMovie(query = "disney")
+//        searchMovie(query = "disney")
     }
 
     fun searchMovie(query: String) {
-        noResultFound.value = false
-        if (query.isNotEmpty()) {
-            isFetching.value = true
-            viewModelScope.launch {
-                val result = movieRepository.searchMovie(
-                    query = query,
-                    type = "movie",
-                    page = 1,
-                )
-                if (result.isEmpty()) {
-                    noResultFound.value = true
-                } else {
-                    moviesList.value = result
-                }
-                isFetching.value = false
-            }
-        } else {
-            resetMovieList()
-        }
-    }
-
-    fun nextPage(query: String){
-        viewModelScope.launch {
-            // prevent duplicate event due to recompose happening to quickly
-            if((movieListScrollPosition + 1) >= (page.value * PAGE_SIZE) ){
+        if (connectivityManager.isNetworkAvailable.value) {
+            noResultFound.value = false
+            if (query.isNotEmpty()) {
                 isFetching.value = true
-                incrementPage()
-                Log.d(TAG, "nextPage: triggered: ${page.value}")
-
-                //FIXME: Remove this after demo
-                // just to show pagination, api is fast
-                delay(250)
-
-                if(page.value > 1){
+                viewModelScope.launch {
                     val result = movieRepository.searchMovie(
                         query = query,
                         type = "movie",
-                        page = page.value,
+                        page = 1,
                     )
-                    appendMovies(result)
+                    if (result.isEmpty()) {
+                        noResultFound.value = true
+                    } else {
+                        moviesList.value = result
+                    }
+                    isFetching.value = false
                 }
-                isFetching.value = false
+            } else {
+                resetMovieList()
+            }
+        }
+    }
+
+    fun nextPage(query: String) {
+        if (connectivityManager.isNetworkAvailable.value) {
+            viewModelScope.launch {
+                // prevent duplicate event due to recompose happening to quickly
+                if ((movieListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
+                    isFetching.value = true
+                    incrementPage()
+                    Log.d(TAG, "nextPage: triggered: ${page.value}")
+
+                    //FIXME: Remove this after demo
+                    // just to show pagination, api is fast
+                    delay(250)
+
+                    if (page.value > 1) {
+                        val result = movieRepository.searchMovie(
+                            query = query,
+                            type = "movie",
+                            page = page.value,
+                        )
+                        appendMovies(result)
+                    }
+                    isFetching.value = false
+                }
             }
         }
     }

@@ -42,5 +42,5 @@ val Typography = Typography(
         fontFamily = gothicA1,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp
-    )
+    ),
 )
