@@ -60,7 +60,7 @@ class MovieSearchViewModelTest {
     }
 
     @Test
-    fun `GIVEN crypto currency has a set price WHEN app retrieves the price THEN return price object with price and false loading state`() {
+    fun `GIVEN movie search yeilds desired results`() {
         testDispatcher.runBlockingTest {
             viewModel.searchMovie(query = "Dr.Strange")
         }

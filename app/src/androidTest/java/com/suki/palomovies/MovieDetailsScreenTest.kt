@@ -13,15 +13,15 @@ import org.junit.Test
 
 class MovieDetailsScreenTest {
 
-    //FIXME: In progress
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @ExperimentalFoundationApi
     @ExperimentalComposeUiApi
     @Test
-    fun given_bitcoin_price_is_known_when_app_retrieves_bitcoin_price_then_show_bitcoin_price() {
+    fun given_compose_view_has_desired_header_text() {
+
+        //FIXME: In progress
 
         composeTestRule.setContent {
             val navController = rememberNavController()
