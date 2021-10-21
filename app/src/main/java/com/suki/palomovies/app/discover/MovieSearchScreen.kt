@@ -42,6 +42,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import com.suki.palomovies.R
+import com.suki.palomovies.app.Screen
 import com.suki.palomovies.patform.repository.data.Movie
 import com.suki.palomovies.ui.theme.Purple500
 import com.suki.palomovies.ui.theme.Purple700
@@ -85,7 +86,7 @@ fun MovieSearchScreen(navController: NavController) {
                             viewModel.nextPage(viewModel.query.value)
                         }
                         MovieThumbnail(feature = movie, onClick = {
-                            navController.navigate("movie_details")
+                            navController.navigate(Screen.MovieDetails.createRoute(movie.movieId))
                         })
                     }
                 }
