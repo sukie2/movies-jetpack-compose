@@ -85,7 +85,7 @@ fun MovieSearchScreen(navController: NavController) {
                         if((index + 1) >= (page * PAGE_SIZE) && !viewModel.isFetching.value){
                             viewModel.nextPage(viewModel.query.value)
                         }
-                        MovieThumbnail(feature = movie, onClick = {
+                        MovieThumbnail(movie = movie, onClick = {
                             navController.navigate(Screen.MovieDetails.createRoute(movie.movieId))
                         })
                     }
@@ -222,7 +222,7 @@ fun SearchBar(viewModel: MovieSearchViewModel) {
 
 @Composable
 fun MovieThumbnail(
-    feature: Movie,
+    movie: Movie,
     onClick: () -> Unit
 ) {
     BoxWithConstraints(
@@ -239,7 +239,7 @@ fun MovieThumbnail(
 
         ) {
             GlideImage(
-                imageModel = feature.posterUrl,
+                imageModel = movie.posterUrl,
                 contentScale = ContentScale.FillWidth,
                 circularReveal = CircularReveal(duration = 250),
                 placeHolder = ImageBitmap.imageResource(R.drawable.movie_placeholder),
@@ -251,7 +251,7 @@ fun MovieThumbnail(
                 alignment = Alignment.Center,
             )
             Text(
-                text = feature.title,
+                text = movie.title,
                 style = MaterialTheme.typography.body1,
                 lineHeight = 26.sp,
                 maxLines = 1,
