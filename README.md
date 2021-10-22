@@ -1,5 +1,5 @@
 # Movie Search
-## Teach stack
+## Tech stack
 - Jetpack Compose
 - MVVM
 - Hilt for dependency injection.
