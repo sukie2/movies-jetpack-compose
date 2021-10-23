@@ -1,13 +1,10 @@
 package com.suki.palomovies
 
-import android.app.Application
 import androidx.compose.runtime.mutableStateOf
-import androidx.test.platform.app.InstrumentationRegistry
 import com.suki.palomovies.app.discover.MovieSearchViewModel
 import com.suki.palomovies.patform.repository.MovieRepository
 import com.suki.palomovies.patform.repository.data.Movie
-import com.suki.palomovies.patform.util.ConnectivityManager
-
+import com.suki.palomovies.patform.util.ConnectivityListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -22,7 +19,6 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import javax.inject.Inject
 
 
 @ExperimentalCoroutinesApi
@@ -32,15 +28,12 @@ class MovieSearchViewModelTest {
     private lateinit var viewModel: MovieSearchViewModel
     private lateinit var repository: MovieRepository
     private val testDispatcher = TestCoroutineDispatcher()
-    @Inject
-    lateinit var connectivityManager: ConnectivityManager
+    private var connectivityManager: ConnectivityListener = mock()
 
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-
     //FIXME: In progress
-
 
     @Before
     fun setUp() {
@@ -60,7 +53,7 @@ class MovieSearchViewModelTest {
     }
 
     @Test
-    fun `GIVEN movie search yeilds desired results`() {
+    fun `GIVEN movie search yields desired results`() {
         testDispatcher.runBlockingTest {
             viewModel.searchMovie(query = "Dr.Strange")
         }
