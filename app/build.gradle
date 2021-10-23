@@ -19,9 +19,13 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        testInstrumentationRunner = "com.suki.palomovies.CustomTestRunner"
     }
 
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -68,6 +72,11 @@ dependencies {
     implementation 'androidx.test:monitor:1.4.0'
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
     implementation('androidx.hilt:hilt-navigation-compose:1.0.0-alpha03')
+    debugImplementation 'androidx.fragment:fragment-testing:1.4.0-alpha10'
+    androidTestImplementation("com.google.dagger:hilt-android-testing:$hilt_version")
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.39.1"
+    annotationProcessor 'com.google.dagger:hilt-android-compiler:2.39.1'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"

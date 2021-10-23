@@ -3,6 +3,7 @@ package com.suki.palomovies.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -10,9 +11,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.suki.palomovies.patform.util.ConnectivityListenerImpl
 import com.suki.palomovies.app.discover.MovieDetailsScreen
+import com.suki.palomovies.app.discover.MovieDetailsViewModel
 import com.suki.palomovies.app.discover.MovieSearchScreen
+import com.suki.palomovies.app.discover.MovieSearchViewModel
 import com.suki.palomovies.patform.util.ConnectivityListener
 import com.suki.palomovies.ui.theme.PaloMoviesTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +24,8 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var connectivityManager: ConnectivityListener
+
+//    private val movieSearchViewModel: MovieSearchViewModel by viewModels()
 
     override fun onStart() {
         super.onStart()
@@ -33,8 +37,8 @@ class MainActivity : ComponentActivity() {
         connectivityManager.unregisterConnectionObserver(this)
     }
 
-    @ExperimentalComposeUiApi
     @ExperimentalFoundationApi
+    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -45,11 +49,15 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = Screen.MovieSearch.route
                     ) {
-                        composable(Screen.MovieSearch.route) { MovieSearchScreen(navController = navController) }
-                        composable(route = Screen.MovieDetails.route,) { backStackEntry ->
+                        composable(Screen.MovieSearch.route) {
+                            val viewModel: MovieSearchViewModel by viewModels()
+                            MovieSearchScreen(navController, viewModel)
+                        }
+                        composable(route = Screen.MovieDetails.route) { backStackEntry ->
+                            val viewModel: MovieDetailsViewModel by viewModels()
                             val movieId = backStackEntry.arguments?.getString("movieId")
                             requireNotNull(movieId) { "movieId parameter wasn't found. Please make sure it's set!" }
-                            MovieDetailsScreen(navController, movieId)
+                            MovieDetailsScreen(viewModel, movieId)
                         }
                     }
                 }

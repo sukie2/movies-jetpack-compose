@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -51,8 +52,7 @@ import com.suki.palomovies.ui.theme.TextWhite
 @ExperimentalComposeUiApi
 @ExperimentalFoundationApi
 @Composable
-fun MovieSearchScreen(navController: NavController) {
-    val viewModel = hiltViewModel<MovieSearchViewModel>()
+fun MovieSearchScreen(navController: NavController, viewModel: MovieSearchViewModel) {
     val movieList = viewModel.moviesList.value
     val page = viewModel.page.value
     Box(

@@ -14,7 +14,7 @@ import javax.inject.Singleton
 object MovieModule {
     @Singleton
     @Provides
-    fun providePricingRepository(bpiApi: MovieApi): MovieRepository {
+    fun provideMovieRepository(bpiApi: MovieApi): MovieRepository {
         return MovieRepositoryImpl(bpiApi)
     }
 }

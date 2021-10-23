@@ -20,8 +20,6 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.CircularReveal
@@ -35,8 +33,10 @@ import com.suki.palomovies.ui.theme.Purple700
 import com.suki.palomovies.ui.theme.TextWhite
 
 @Composable
-fun MovieDetailsScreen(navController: NavController, movieId: String) {
-    val viewModel = hiltViewModel<MovieDetailsViewModel>()
+fun MovieDetailsScreen(
+    viewModel: MovieDetailsViewModel,
+    movieId: String
+) {
     viewModel.getMovieDetails(movieId)
     val movieDetails = viewModel.movieDetails.value
 
@@ -46,7 +46,7 @@ fun MovieDetailsScreen(navController: NavController, movieId: String) {
             .background(Purple700)
             .fillMaxSize()
     ) {
-        LazyColumn() {
+        LazyColumn {
             item {
                 PosterSection(movieDetails = movieDetails)
                 InfoSection(movieDetails = movieDetails)
@@ -89,8 +89,16 @@ fun InfoSection(movieDetails: MovieDetails) {
             modifier = Modifier
                 .fillMaxWidth(),
         ) {
-            SubHeaderText(movieDetails.genre, modifier = Modifier.weight(1f), textAlign = TextAlign.Start)
-            SubHeaderText(movieDetails.runtime, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+            SubHeaderText(
+                movieDetails.genre,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Start
+            )
+            SubHeaderText(
+                movieDetails.runtime,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center
+            )
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
                 Icon(
                     Icons.Filled.Star, "StarImage",
@@ -144,8 +152,9 @@ fun PosterSection(movieDetails: MovieDetails) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    Brush.verticalGradient((
-                            listOf(Color.Transparent, Color.Black)),
+                    Brush.verticalGradient(
+                        (
+                                listOf(Color.Transparent, Color.Black)),
                         0f,
                         200f,
                     )

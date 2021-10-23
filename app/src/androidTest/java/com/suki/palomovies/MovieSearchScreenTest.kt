@@ -5,18 +5,21 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.navigation.compose.rememberNavController
 import com.suki.palomovies.app.MainActivity
-import com.suki.palomovies.app.discover.MovieDetailsScreen
-import com.suki.palomovies.app.discover.MovieDetailsViewModel
+import com.suki.palomovies.app.discover.MovieSearchScreen
+import com.suki.palomovies.app.discover.MovieSearchViewModel
 import com.suki.palomovies.ui.theme.PaloMoviesTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
 @HiltAndroidTest
-class MovieDetailsScreenTest {
+class MovieSearchScreenTest {
 
     @get:Rule(order = 1)
     var hiltTestRule = HiltAndroidRule(this)
@@ -37,15 +40,15 @@ class MovieDetailsScreenTest {
 
         composeTestRule.setContent {
             PaloMoviesTheme(isNetworkAvailable = true) {
-                MovieDetailsScreen(
-                    movieId = "test12345",
-                    viewModel = composeTestRule.activity.viewModels<MovieDetailsViewModel>().value
-                )
+                val navController = rememberNavController()
+                MovieSearchScreen(
+                    navController = navController,
+                    viewModel = composeTestRule.activity.viewModels<MovieSearchViewModel>().value)
             }
         }
 
         composeTestRule.onNode(
-            hasText("Synopsis"),
+            hasText("Start by typing a movie name"),
             useUnmergedTree = true
         ).assertExists()
     }
