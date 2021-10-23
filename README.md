@@ -1,5 +1,7 @@
 # Movie Search
 
+<img src="screenshots/SC-2.png" width="320" height="640">     <img src="screenshots/SC-3.png" width="320" height="640">
+
 ## Prerequisite
 - Android Studio Arctic Fox 🦊
 
