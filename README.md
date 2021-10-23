@@ -1,4 +1,8 @@
 # Movie Search
+
+## Prerequisite
+- Android Studio Arctic Fox 🦊
+
 ## Tech stack
 - Jetpack Compose
 - MVVM
