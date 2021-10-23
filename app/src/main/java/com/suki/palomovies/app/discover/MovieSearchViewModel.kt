@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.suki.palomovies.patform.repository.MovieRepository
 import com.suki.palomovies.patform.repository.data.Movie
-import com.suki.palomovies.patform.util.ConnectivityManager
+import com.suki.palomovies.patform.util.ConnectivityListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ const val PAGE_SIZE = 10
 @HiltViewModel
 class MovieSearchViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
-    private val connectivityManager: ConnectivityManager,
+    private val connectivityManager: ConnectivityListener,
 ) : ViewModel() {
     var moviesList: MutableState<List<Movie>> = mutableStateOf(ArrayList())
     val query = mutableStateOf("")

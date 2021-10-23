@@ -10,9 +10,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.suki.palomovies.patform.util.ConnectivityManager
+import com.suki.palomovies.patform.util.ConnectivityListenerImpl
 import com.suki.palomovies.app.discover.MovieDetailsScreen
 import com.suki.palomovies.app.discover.MovieSearchScreen
+import com.suki.palomovies.patform.util.ConnectivityListener
 import com.suki.palomovies.ui.theme.PaloMoviesTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -20,7 +21,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
-    lateinit var connectivityManager: ConnectivityManager
+    lateinit var connectivityManager: ConnectivityListener
 
     override fun onStart() {
         super.onStart()
