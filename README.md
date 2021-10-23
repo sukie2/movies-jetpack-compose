@@ -14,5 +14,5 @@
 
 ## Special thanks
 - Detailed Hilt + Android UI testing tutorial (https://medium.com/nerd-for-tech/writing-an-integration-test-with-jetpack-compose-and-dagger-hilt-8ef888c1a23d)
-- Reviewing and support https://github.com/chezecz
+- Reviewing and support Andrei Maslennikov https://github.com/chezecz
 
