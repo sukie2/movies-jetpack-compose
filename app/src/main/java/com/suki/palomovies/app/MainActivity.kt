@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                             val viewModel: MovieSearchViewModel by viewModels()
                             MovieSearchScreen(navController, viewModel)
                         }
-                        composable(route = Screen.MovieDetails.route) { backStackEntry ->
+                        composable(Screen.MovieDetails.route) { backStackEntry ->
                             val viewModel: MovieDetailsViewModel by viewModels()
                             val movieId = backStackEntry.arguments?.getString("movieId")
                             requireNotNull(movieId) { "movieId parameter wasn't found. Please make sure it's set!" }

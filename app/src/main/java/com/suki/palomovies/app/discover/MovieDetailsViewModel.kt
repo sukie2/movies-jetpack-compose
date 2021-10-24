@@ -17,9 +17,9 @@ class MovieDetailsViewModel @Inject constructor(
     private val connectivityManager: ConnectivityListener,
 ) : ViewModel() {
     var movieDetails: MutableState<MovieDetails> = mutableStateOf(MovieDetails())
-    var noResultFound = mutableStateOf(false)
+    private var noResultFound = mutableStateOf(false)
     var isFetching = mutableStateOf(false)
-    var hasDataFetched = false
+    private var hasDataFetched = false
 
     fun getMovieDetails(movieId: String) {
         if (!hasDataFetched && connectivityManager.isNetworkAvailable.value) {
