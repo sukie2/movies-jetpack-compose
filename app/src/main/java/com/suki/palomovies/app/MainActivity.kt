@@ -25,8 +25,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var connectivityManager: ConnectivityListener
 
-//    private val movieSearchViewModel: MovieSearchViewModel by viewModels()
-
     override fun onStart() {
         super.onStart()
         connectivityManager.registerConnectionObserver(this)
