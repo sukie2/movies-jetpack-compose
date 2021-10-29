@@ -19,10 +19,9 @@ class MovieDetailsViewModel @Inject constructor(
     var movieDetails: MutableState<MovieDetails> = mutableStateOf(MovieDetails())
     private var noResultFound = mutableStateOf(false)
     var isFetching = mutableStateOf(false)
-    private var hasDataFetched = false
 
     fun getMovieDetails(movieId: String) {
-        if (!hasDataFetched && connectivityManager.isNetworkAvailable.value) {
+        if (connectivityManager.isNetworkAvailable.value) {
             noResultFound.value = false
             if (movieId.isNotEmpty()) {
                 isFetching.value = true
@@ -37,7 +36,6 @@ class MovieDetailsViewModel @Inject constructor(
                         movieDetails.value = result
                     }
                     isFetching.value = false
-                    hasDataFetched = true
                 }
             } else {
                 resetMovieData()
@@ -48,6 +46,5 @@ class MovieDetailsViewModel @Inject constructor(
     private fun resetMovieData() {
         movieDetails = mutableStateOf(MovieDetails())
         noResultFound.value = false
-        hasDataFetched = false
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Modifier
@@ -37,7 +38,11 @@ fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel,
     movieId: String
 ) {
-    viewModel.getMovieDetails(movieId)
+    LaunchedEffect(key1 = movieId) {
+        viewModel.movieDetails.value = MovieDetails()
+        viewModel.getMovieDetails(movieId)
+    }
+
     val movieDetails = viewModel.movieDetails.value
 
     Box(
